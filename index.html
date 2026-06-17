@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TECNO-SUR | Tienda de Tecnología y Servicios</title>
+    <!-- Importación de Fuentes e Iconos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/e55497fa91.js" crossorigin="anonymous"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            200: '#badffd',
+                            300: '#7cc3fc',
+                            400: '#38a4f9',
+                            500: '#0e86e3',
+                            600: '#0269c2',
+                            700: '#03549e',
+                            800: '#074881',
+                            900: '#0c3d6b',
+                            950: '#082747',
+                        },
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col overflow-x-hidden">
+
+    <!-- Cabecera / Navegación principal -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logotipo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-11 h-11 bg-gradient-to-tr from-brand-600 to-cyan-500 rounded-xl flex items-center justify-center text-white shadow-md shadow-brand-200 group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-microchip text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-extrabold text-2xl tracking-tight bg-gradient-to-r from-brand-700 to-cyan-600 bg-clip-text text-transparent">TECNO-SUR</span>
+                        <p class="text-[10px] uppercase tracking-widest text-slate-400 font-bold -mt-1">Tecnología sin límites</p>
+                    </div>
+                </a>
+
+                <!-- Navegación Escritorio -->
+                <nav class="hidden md:flex items-center gap-8">
+                    <a href="#inicio" class="text-slate-600 hover:text-brand-600 font-medium transition-colors">Inicio</a>
+                    <a href="#productos" class="text-slate-600 hover:text-brand-600 font-medium transition-colors">Productos</a>
+                    <a href="#armarpc" class="text-slate-600 hover:text-brand-600 font-medium transition-colors flex items-center gap-1.5">
+                        Arma tu PC
+                        <span class="bg-brand-100 text-brand-700 text-[10px] px-1.5 py-0.5 rounded-full font-bold">PRO</span>
+                    </a>
+                    <a href="#servicios" class="text-slate-600 hover:text-brand-600 font-medium transition-colors">Servicios</a>
+                    <a href="#contacto" class="text-slate-600 hover:text-brand-600 font-medium transition-colors">Contacto</a>
+                </nav>
+
+                <!-- Acciones Rápidas (Buscador y Carrito) -->
+                <div class="flex items-center gap-4">
+                    <!-- Buscador Desktop -->
+                    <div class="hidden lg:flex items-center relative w-64">
+                        <input type="text" id="desktopSearch" placeholder="Buscar productos..." class="w-full pl-9 pr-4 py-2 text-sm bg-slate-100 border-none rounded-full focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all text-slate-700 placeholder-slate-400">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 text-slate-400 text-sm"></i>
+                    </div>
+
+                    <!-- Botón Carrito -->
+                    <button onclick="toggleCart()" class="relative p-2.5 rounded-full hover:bg-slate-100 transition-all text-slate-700 hover:text-brand-600" aria-label="Abrir Carrito">
+                        <i class="fa-solid fa-basket-shopping text-xl"></i>
+                        <span id="cartCountBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white transform scale-90 transition-all hidden">0</span>
+                    </button>
+
+                    <!-- Botón Menú Móvil -->
+                    <button onclick="toggleMobileMenu()" class="md:hidden p-2.5 rounded-full hover:bg-slate-100 transition-all text-slate-700">
+                        <i class="fa-solid fa-bars text-xl" id="menuIcon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Móvil Desplegable -->
+        <div id="mobileMenu" class="hidden md:hidden border-t border-slate-200 bg-white shadow-inner animate-fade-in">
+            <div class="px-4 py-4 space-y-3">
+                <div class="relative w-full mb-4">
+                    <input type="text" id="mobileSearch" placeholder="Buscar productos..." class="w-full pl-9 pr-4 py-2.5 text-sm bg-slate-100 border-none rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-700">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-slate-400 text-sm"></i>
+                </div>
+                <a href="#inicio" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-xl text-slate-700 hover:bg-brand-50 hover:text-brand-600 font-medium transition-colors">Inicio</a>
+                <a href="#productos" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-xl text-slate-700 hover:bg-brand-50 hover:text-brand-600 font-medium transition-colors">Productos</a>
+                <a href="#armarpc" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-xl text-slate-700 hover:bg-brand-50 hover:text-brand-600 font-medium transition-colors">Arma tu PC</a>
+                <a href="#servicios" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-xl text-slate-700 hover:bg-brand-50 hover:text-brand-600 font-medium transition-colors">Servicios</a>
+                <a href="#contacto" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-xl text-slate-700 hover:bg-brand-50 hover:text-brand-600 font-medium transition-colors">Contacto</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sección Hero (Presentación Principal) -->
+    <section id="inicio" class="relative overflow-hidden bg-gradient-to-b from-white to-slate-50 pt-12 pb-24 lg:pt-20 lg:pb-32">
+        <!-- Elementos de Fondo Abstractos -->
+        <div class="absolute inset-0 z-0 pointer-events-none opacity-40">
+            <div class="absolute top-1/4 left-1/10 w-96 h-96 bg-brand-100 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/10 w-96 h-96 bg-cyan-100 rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Contenido Informativo -->
+                <div class="space-y-8 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-50 border border-brand-200 text-brand-700 rounded-full text-xs font-semibold tracking-wide">
+                        <span class="flex h-2 w-2 rounded-full bg-brand-500 animate-pulse"></span>
+                        Tecnología Avanzada de Confianza
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-tight">
+                        Actualiza Tu Mundo <span class="bg-gradient-to-r from-brand-600 to-cyan-500 bg-clip-text text-transparent">TECNO-SUR</span>
+                    </h1>
+                    <p class="text-lg text-slate-600 max-w-xl mx-auto lg:mx-0">
+                        Tu socio tecnológico clave en computadoras de alto rendimiento, periféricos ergonómicos y el servicio técnico más especializado. Transformamos tu forma de trabajar y jugar.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <a href="#productos" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg shadow-brand-200 hover:-translate-y-0.5 transition-all">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            Ver Catálogo
+                        </a>
+                        <a href="#armarpc" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white hover:bg-slate-100 text-slate-800 border border-slate-200 font-bold rounded-xl hover:-translate-y-0.5 transition-all">
+                            <i class="fa-solid fa-hammer text-brand-600"></i>
+                            Armar mi PC ideal
+                        </a>
+                    </div>
+                    <!-- Stats Cortos -->
+                    <div class="grid grid-cols-3 gap-6 pt-6 border-t border-slate-200 max-w-md mx-auto lg:mx-0 text-left">
+                        <div>
+                            <span class="block text-2xl font-black text-slate-900">5K+</span>
+                            <span class="text-xs text-slate-500">Clientes Satisfechos</span>
+                        </div>
+                        <div>
+                            <span class="block text-2xl font-black text-slate-900">24h</span>
+                            <span class="text-xs text-slate-500">Soporte Técnico</span>
+                        </div>
+                        <div>
+                            <span class="block text-2xl font-black text-slate-900">100%</span>
+                            <span class="text-xs text-slate-500">Garantía Real</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Imagen Destacada Interactiva -->
+                <div class="relative flex justify-center lg:justify-end">
+                    <div class="relative w-full max-w-[500px] aspect-square bg-gradient-to-tr from-brand-500/10 to-cyan-500/10 rounded-2xl p-6 shadow-xl border border-white flex items-center justify-center">
+                        <!-- Imagen Principal Descriptiva (Computadora y accesorios en Mockup) -->
+                        <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&q=80&w=800" alt="Setup de Computadora" class="rounded-xl shadow-lg max-h-[90%] object-cover object-center border border-slate-200/50" onerror="this.src='https://placehold.co/800x800/e2e8f0/0f172a?text=TECNO-SUR+SETUP'">
+                        
+                        <!-- Floating Badges -->
+                        <div class="absolute -top-4 -left-4 bg-white p-4 rounded-xl shadow-md border border-slate-100 flex items-center gap-3 animate-bounce" style="animation-duration: 4s;">
+                            <div class="w-10 h-10 bg-cyan-100 rounded-lg flex items-center justify-center text-cyan-600">
+                                <i class="fa-solid fa-bolt"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase">Última Generación</p>
+                                <p class="text-xs font-bold text-slate-800">PROCESADORES i9 / R9</p>
+                            </div>
+                        </div>
+
+                        <div class="absolute -bottom-4 -right-4 bg-white p-4 rounded-xl shadow-md border border-slate-100 flex items-center gap-3 animate-bounce" style="animation-duration: 5s;">
+                            <div class="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center text-emerald-600">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase">Compra Segura</p>
+                                <p class="text-xs font-bold text-slate-800">Garantía Oficial</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Catálogo de Productos -->
+    <section id="productos" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <span class="text-brand-600 font-bold uppercase tracking-wider text-xs">Nuestro Inventario</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">Explora lo Último en Tecnología</h2>
+                <p class="text-slate-500">Ofrecemos hardware de primer nivel con rendimiento garantizado y el asesoramiento personalizado que mereces.</p>
+            </div>
+
+            <!-- Filtros y Búsqueda -->
+            <div class="flex flex-col md:flex-row gap-6 justify-between items-center mb-10 pb-6 border-b border-slate-100">
+                <!-- Categorías -->
+                <div class="flex flex-wrap gap-2 justify-center" id="categoryFilterContainer">
+                    <button onclick="filterCategory('todos')" class="category-btn active px-5 py-2.5 rounded-full text-sm font-semibold transition-all shadow-sm bg-brand-600 text-white">
+                        Todos
+                    </button>
+                    <button onclick="filterCategory('computadoras')" class="category-btn px-5 py-2.5 rounded-full text-sm font-semibold transition-all shadow-sm bg-slate-100 text-slate-600 hover:bg-slate-200">
+                        <i class="fa-solid fa-desktop mr-1.5"></i> Computadoras
+                    </button>
+                    <button onclick="filterCategory('teclados')" class="category-btn px-5 py-2.5 rounded-full text-sm font-semibold transition-all shadow-sm bg-slate-100 text-slate-600 hover:bg-slate-200">
+                        <i class="fa-solid fa-keyboard mr-1.5"></i> Teclados
+                    </button>
+                    <button onclick="filterCategory('mouse')" class="category-btn px-5 py-2.5 rounded-full text-sm font-semibold transition-all shadow-sm bg-slate-100 text-slate-600 hover:bg-slate-200">
+                        <i class="fa-solid fa-mouse mr-1.5"></i> Ratones
+                    </button>
+                    <button onclick="filterCategory('accesorios')" class="category-btn px-5 py-2.5 rounded-full text-sm font-semibold transition-all shadow-sm bg-slate-100 text-slate-600 hover:bg-slate-200">
+                        <i class="fa-solid fa-headphones mr-1.5"></i> Accesorios
+                    </button>
+                </div>
+
+                <!-- Ordenar por precio -->
+                <div class="flex items-center gap-3 w-full md:w-auto">
+                    <label for="sortSelect" class="text-sm font-medium text-slate-500 whitespace-nowrap">Ordenar por:</label>
+                    <select id="sortSelect" onchange="sortProducts()" class="w-full md:w-56 px-4 py-2.5 bg-slate-100 border-none rounded-xl text-sm focus:ring-2 focus:ring-brand-500 text-slate-700 outline-none">
+                        <option value="featured">Destacados</option>
+                        <option value="price-asc">Precio: Menor a Mayor</option>
+                        <option value="price-desc">Precio: Mayor a Menor</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Contenedor del Grid de Productos -->
+            <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Se inyecta dinámicamente con JS -->
+            </div>
+
+            <!-- Estado de no productos encontrados -->
+            <div id="noProductsFound" class="hidden text-center py-20">
+                <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-slate-400 mb-4 text-xl">
+                    <i class="fa-solid fa-ban"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800">No encontramos productos</h3>
+                <p class="text-slate-400 text-sm mt-1">Prueba cambiando tu búsqueda o seleccionando otra categoría.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Configurador Interactivo de PC (Arma tu PC) -->
+    <section id="armarpc" class="py-20 bg-slate-100 border-y border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <span class="text-brand-600 font-bold uppercase tracking-wider text-xs">Asistente Virtual</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">Configura la Computadora de Tus Sueños</h2>
+                <p class="text-slate-500">Selecciona componentes compatibles para tu PC gaming o de oficina de manera intuitiva y visualiza el costo estimado en tiempo real.</p>
+            </div>
+
+            <!-- Layout del Configurador -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                
+                <!-- Selector de Componentes (Columna Izquierda/Centro) -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Procesador -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/50">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="w-8 h-8 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center font-bold">1</span>
+                            <h3 class="font-bold text-slate-800 text-lg">Procesador (CPU)</h3>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <label class="relative flex flex-col p-4 bg-slate-50 border-2 border-slate-200 hover:border-brand-500 rounded-xl cursor-pointer transition-all">
+                                <input type="radio" name="cpu" value="intel-i5" class="sr-only" onchange="updatePCBuilder()" checked>
+                                <span class="text-xs text-slate-400 font-bold uppercase">Gama Media</span>
+                                <span class="font-bold text-slate-800 mt-1">Intel Core i5</span>
+                                <span class="text-brand-600 font-bold text-sm mt-2">$210.00</span>
+                            </label>
+                            <label class="relative flex flex-col p-4 bg-slate-50 border-2 border-slate-200 hover:border-brand-500 rounded-xl cursor-pointer transition-all">
+                                <input type="radio" name="cpu" value="ryzen-7" class="sr-only" onchange="updatePCBuilder()">
+                                <span class="text-xs text-slate-400 font-bold uppercase">Gama Alta</span>
+                                <span class="font-bold text-slate-800 mt-1">AMD Ryzen 7</span>
+                                <span class="text-brand-600 font-bold text-sm mt-2">$340.00</span>
+                            </label>
+                            <label class="relative flex flex-col p-4 bg-slate-50 border-2 border-slate-200 hover:border-brand-500 rounded-xl cursor-pointer transition-all">
+                                <input type="radio" name="cpu" value="intel-i9" class="sr-only" onchange="updatePCBuilder()">
+                                <span class="text-xs text-slate-400 font-bold uppercase">Extremo</span>
+                                <span class="font-bold text-slate-800 mt-1">Intel Core i9</span>
+                                <span class="text-brand-600 font-bold text-sm mt-2">$580.00</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta Gráfica -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/50">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="w-8 h-8 rounded-lg bg-cyan-100 text-cyan-600 flex items-center justify-center font-bold">2</span>
+                            <h3 class="font-bold text-slate-800 text-lg">Tarjeta Gráfica (GPU)</h3>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <label class="relative flex flex-col p-4 bg-slate-50 border-2 border-slate-200 hover:border-brand-500 rounded-xl cursor-pointer transition-all">
+                                <input type="radio" name="gpu" value="rtx-3050" class="sr-only" onchange="updatePCBuilder()" checked>
+                                <span class="text-xs text-slate-400 font-bold uppercase">Entrada</span>
+                                <span class="font-bold text-slate-800 mt-1">RTX 3050 8GB</span>
+                                <span class="text-brand-600 font-bold text-sm mt-2">$280.00</span>
+                            </label>
+                            <label class="relative flex flex-col p-4 bg-slate-50 border-2 border-slate-200 hover:border-brand-500 rounded-xl cursor-pointer transition-all">
+                                <input type="radio" name="gpu" value="rtx-4060" class="sr-only" onchange="updatePCBuilder()">
+                                <span class="text-xs text-slate-400 font-bold uppercase">Recomendado</span>
+                                <span class="font-bold text-slate-800 mt-1">RTX 4060 Ti 16GB</span>
+                                <span class="text-brand-600 font-bold text-sm mt-2">$450.00</span>
+                            </label>
+                            <label class="relative flex flex-col p-4 bg-slate-50 border-2 border-slate-200 hover:border-brand-500 rounded-xl cursor-pointer transition-all">
+                                <input type="radio" name="gpu" value="rtx-4080" class="sr-only" onchange="updatePCBuilder()">
+                                <span class="text-xs text-slate-400 font-bold uppercase">Entusiasta</span>
+                                <span class="font-bold text-slate-800 mt-1">RTX 4080 Super</span>
+                                <span class="text-brand-600 font-bold text-sm mt-2">$999.00</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Memoria RAM -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/50">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold">3</span>
+                            <h3 class="font-bold text-slate-800 text-lg">Memoria RAM</h3>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <label class="relative flex flex-col p-4 bg-slate-50 border-2 border-slate-200 hover:border-brand-500 rounded-xl cursor-pointer transition-all">
+                                <input type="radio" name="ram" value="ram-16" class="sr-only" onchange="updatePCBuilder()" checked>
+                                <span class="text-xs text-slate-400 font-bold uppercase">Estándar</span>
+                                <span class="font-bold text-slate-800 mt-1">16GB DDR5 Dual</span>
+                                <span class="text-brand-600 font-bold text-sm mt-2">$85.00</span>
+                            </label>
+                            <label class="relative flex flex-col p-4 bg-slate-50 border-2 border-slate-200 hover:border-brand-500 rounded-xl cursor-pointer transition-all">
+                                <input type="radio" name="ram" value="ram-32" class="sr-only" onchange="updatePCBuilder()">
+                                <span class="text-xs text-slate-400 font-bold uppercase">Rendimiento</span>
+                                <span class="font-bold text-slate-800 mt-1">32GB DDR5 RGB</span>
+                                <span class="text-brand-600 font-bold text-sm mt-2">$155.00</span>
+                            </label>
+                            <label class="relative flex flex-col p-4 bg-slate-50 border-2 border-slate-200 hover:border-brand-500 rounded-xl cursor-pointer transition-all">
+                                <input type="radio" name="ram" value="ram-64" class="sr-only" onchange="updatePCBuilder()">
+                                <span class="text-xs text-slate-400 font-bold uppercase">Pro-Creator</span>
+                                <span class="font-bold text-slate-800 mt-1">64GB DDR5 Xtreme</span>
+                                <span class="text-brand-600 font-bold text-sm mt-2">$290.00</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Almacenamiento SSD -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/50">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold">4</span>
+                            <h3 class="font-bold text-slate-800 text-lg">Almacenamiento SSD M.2</h3>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <label class="relative flex flex-col p-4 bg-slate-50 border-2 border-slate-200 hover:border-brand-500 rounded-xl cursor-pointer transition-all">
+                                <input type="radio" name="storage" value="ssd-512" class="sr-only" onchange="updatePCBuilder()" checked>
+                                <span class="text-xs text-slate-400 font-bold uppercase">Básico</span>
+                                <span class="font-bold text-slate-800 mt-1">512GB NVMe PCIe 4.0</span>
+                                <span class="text-brand-600 font-bold text-sm mt-2">$55.00</span>
+                            </label>
+                            <label class="relative flex flex-col p-4 bg-slate-50 border-2 border-slate-200 hover:border-brand-500 rounded-xl cursor-pointer transition-all">
+                                <input type="radio" name="storage" value="ssd-1tb" class="sr-only" onchange="updatePCBuilder()">
+                                <span class="text-xs text-slate-400 font-bold uppercase">Recomendado</span>
+                                <span class="font-bold text-slate-800 mt-1">1TB NVMe Alto Rend.</span>
+                                <span class="text-brand-600 font-bold text-sm mt-2">$95.00</span>
+                            </label>
+                            <label class="relative flex flex-col p-4 bg-slate-50 border-2 border-slate-200 hover:border-brand-500 rounded-xl cursor-pointer transition-all">
+                                <input type="radio" name="storage" value="ssd-2tb" class="sr-only" onchange="updatePCBuilder()">
+                                <span class="text-xs text-slate-400 font-bold uppercase">Masivo</span>
+                                <span class="font-bold text-slate-800 mt-1">2TB NVMe ULTRA-Fast</span>
+                                <span class="text-brand-600 font-bold text-sm mt-2">$180.00</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resumen de Configuración (Columna Derecha - Fijo visualmente en pantallas grandes) -->
+                <div class="bg-white p-8 rounded-2xl shadow-md border border-slate-200 sticky top-28 space-y-6">
+                    <div>
+                        <h3 class="font-extrabold text-xl text-slate-900 mb-1">Mi Configuración</h3>
+                        <p class="text-xs text-slate-400">Componentes de alta compatibilidad probada.</p>
+                    </div>
+
+                    <!-- Lista de Elecciones -->
+                    <ul class="space-y-4 divide-y divide-slate-100 text-sm">
+                        <li class="flex justify-between items-center pt-3">
+                            <div>
+                                <span class="block text-xs font-semibold text-slate-400 uppercase">CPU</span>
+                                <span id="summaryCpuName" class="font-bold text-slate-700">Intel i5</span>
+                            </div>
+                            <span id="summaryCpuPrice" class="font-bold text-slate-600">$210.00</span>
+                        </li>
+                        <li class="flex justify-between items-center pt-3">
+                            <div>
+                                <span class="block text-xs font-semibold text-slate-400 uppercase">GPU</span>
+                                <span id="summaryGpuName" class="font-bold text-slate-700">RTX 3050</span>
+                            </div>
+                            <span id="summaryGpuPrice" class="font-bold text-slate-600">$280.00</span>
+                        </li>
+                        <li class="flex justify-between items-center pt-3">
+                            <div>
+                                <span class="block text-xs font-semibold text-slate-400 uppercase">RAM</span>
+                                <span id="summaryRamName" class="font-bold text-slate-700">16GB DDR5</span>
+                            </div>
+                            <span id="summaryRamPrice" class="font-bold text-slate-600">$85.00</span>
+                        </li>
+                        <li class="flex justify-between items-center pt-3">
+                            <div>
+                                <span class="block text-xs font-semibold text-slate-400 uppercase">Almacenamiento</span>
+                                <span id="summaryStorageName" class="font-bold text-slate-700">512GB NVMe</span>
+                            </div>
+                            <span id="summaryStoragePrice" class="font-bold text-slate-600">$55.00</span>
+                        </li>
+                    </ul>
+
+                    <!-- Placa Madre & Fuente de Poder (Inclusión base fija) -->
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/50 space-y-2">
+                        <div class="flex justify-between text-xs text-slate-500">
+                            <span>Gabinete ATX Premium</span>
+                            <span class="font-bold">Incluido ($0)</span>
+                        </div>
+                        <div class="flex justify-between text-xs text-slate-500">
+                            <span>Fuente Certificada 750W Gold</span>
+                            <span class="font-bold">Incluido ($0)</span>
+                        </div>
+                    </div>
+
+                    <!-- Precio Final y Botón de Cotizar -->
+                    <div class="pt-6 border-t border-slate-200 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs text-slate-400 uppercase font-semibold">Total Estimado</span>
+                            <p id="builderTotal" class="text-3xl font-black text-slate-900">$630.00</p>
+                        </div>
+                    </div>
+
+                    <button onclick="addCustomPCToCart()" class="w-full py-4 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg shadow-brand-200 flex items-center justify-center gap-2 transition-all">
+                        <i class="fa-solid fa-cart-plus"></i>
+                        Añadir PC armada al carrito
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Servicios Especializados -->
+    <section id="servicios" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <span class="text-brand-600 font-bold uppercase tracking-wider text-xs">Soporte Técnico</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">Servicios Profesionales de Confianza</h2>
+                <p class="text-slate-500">No solo vendemos tecnología, nos aseguramos de que siempre esté funcionando a su máximo nivel.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Servicio 1: Armado y Diagnóstico -->
+                <div class="group bg-slate-50 p-8 rounded-2xl border border-slate-200/60 hover:bg-white hover:border-brand-500 hover:shadow-xl hover:shadow-slate-100 transition-all duration-300">
+                    <div class="w-14 h-14 bg-brand-50 text-brand-600 group-hover:bg-brand-600 group-hover:text-white rounded-xl flex items-center justify-center text-2xl transition-all shadow-sm">
+                        <i class="fa-solid fa-hammer"></i>
+                    </div>
+                    <h3 class="font-extrabold text-xl text-slate-800 mt-6 mb-3">Armado y Configuración</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Ensamblamos tu hardware con una perfecta gestión de cables, optimización del flujo de aire y actualización de BIOS de última generación.</p>
+                    <a href="#contacto" class="inline-flex items-center gap-2 text-brand-600 font-bold text-sm mt-6 group-hover:translate-x-1.5 transition-transform">
+                        Solicitar Servicio <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Servicio 2: Reparación de Hardware -->
+                <div class="group bg-slate-50 p-8 rounded-2xl border border-slate-200/60 hover:bg-white hover:border-brand-500 hover:shadow-xl hover:shadow-slate-100 transition-all duration-300">
+                    <div class="w-14 h-14 bg-amber-50 text-amber-600 group-hover:bg-amber-600 group-hover:text-white rounded-xl flex items-center justify-center text-2xl transition-all shadow-sm">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                    </div>
+                    <h3 class="font-extrabold text-xl text-slate-800 mt-6 mb-3">Mantenimiento de Hardware</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Limpieza profunda física interna, cambio de pastas térmicas premium y reemplazo de ventiladores ruidosos o defectuosos.</p>
+                    <a href="#contacto" class="inline-flex items-center gap-2 text-amber-600 font-bold text-sm mt-6 group-hover:translate-x-1.5 transition-transform">
+                        Solicitar Servicio <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Servicio 3: Soporte y Optimización -->
+                <div class="group bg-slate-50 p-8 rounded-2xl border border-slate-200/60 hover:bg-white hover:border-brand-500 hover:shadow-xl hover:shadow-slate-100 transition-all duration-300">
+                    <div class="w-14 h-14 bg-cyan-50 text-cyan-600 group-hover:bg-cyan-600 group-hover:text-white rounded-xl flex items-center justify-center text-2xl transition-all shadow-sm">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 class="font-extrabold text-xl text-slate-800 mt-6 mb-3">Limpieza de Software y Antivirus</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Eliminación completa de malware/bloatware, optimización de velocidad de Windows, formateo limpio y licencias oficiales.</p>
+                    <a href="#contacto" class="inline-flex items-center gap-2 text-cyan-600 font-bold text-sm mt-6 group-hover:translate-x-1.5 transition-transform">
+                        Solicitar Servicio <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Contacto -->
+    <section id="contacto" class="py-20 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-12">
+                
+                <!-- Datos Informativos de la Empresa (Columna de 2/5) -->
+                <div class="lg:col-span-2 space-y-8">
+                    <div>
+                        <span class="text-brand-600 font-bold uppercase tracking-wider text-xs">Ponte en Contacto</span>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2">Visítanos o Escríbenos</h2>
+                        <p class="text-slate-500 mt-4 leading-relaxed">¿Tienes dudas sobre la compatibilidad de algún producto o quieres una cotización corporativa a medida? Nuestro equipo responderá todas tus consultas.</p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-11 h-11 bg-white rounded-xl flex items-center justify-center text-brand-600 shadow-sm border border-slate-200/60 shrink-0">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-sm">Dirección Física</h4>
+                                <p class="text-slate-500 text-sm mt-1">Av. Tecnológica 1024, Barrio Centro, Santa Bárbara, Honduras</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-11 h-11 bg-white rounded-xl flex items-center justify-center text-brand-600 shadow-sm border border-slate-200/60 shrink-0">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-sm">Teléfono & WhatsApp</h4>
+                                <p class="text-slate-500 text-sm mt-1">+504 9876-5432 / +504 2234-5678</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-11 h-11 bg-white rounded-xl flex items-center justify-center text-brand-600 shadow-sm border border-slate-200/60 shrink-0">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-sm">E-mail de Ventas</h4>
+                                <p class="text-slate-500 text-sm mt-1">soporte@tecno-sur.com / ventas@tecno-sur.com</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Horarios -->
+                    <div class="p-6 bg-white rounded-2xl border border-slate-200/60">
+                        <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2 mb-3">
+                            <i class="fa-regular fa-clock text-brand-600"></i> Horario de Atención
+                        </h4>
+                        <div class="grid grid-cols-2 gap-4 text-xs text-slate-500">
+                            <div>
+                                <span class="block font-semibold text-slate-700">Lunes a Viernes</span>
+                                <span>8:00 AM - 6:00 PM</span>
+                            </div>
+                            <div>
+                                <span class="block font-semibold text-slate-700">Sábados</span>
+                                <span>9:00 AM - 2:00 PM</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario Interactivo (Columna de 3/5) -->
+                <div class="lg:col-span-3 bg-white p-8 rounded-2xl shadow-md border border-slate-200/80">
+                    <h3 class="font-extrabold text-xl text-slate-800 mb-6">Envíanos un Mensaje</h3>
+                    <form id="contactForm" onsubmit="handleContactSubmit(event)" class="space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="contactName" class="block text-xs font-bold uppercase text-slate-400 mb-2">Nombre Completo</label>
+                                <input type="text" id="contactName" required placeholder="Ej. Juan Pérez" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500 rounded-xl outline-none transition-all text-sm text-slate-700">
+                            </div>
+                            <div>
+                                <label for="contactEmail" class="block text-xs font-bold uppercase text-slate-400 mb-2">Email Electrónico</label>
+                                <input type="email" id="contactEmail" required placeholder="correo@ejemplo.com" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500 rounded-xl outline-none transition-all text-sm text-slate-700">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="contactPhone" class="block text-xs font-bold uppercase text-slate-400 mb-2">Teléfono / WhatsApp</label>
+                                <input type="tel" id="contactPhone" placeholder="Opcional" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500 rounded-xl outline-none transition-all text-sm text-slate-700">
+                            </div>
+                            <div>
+                                <label for="contactSubject" class="block text-xs font-bold uppercase text-slate-400 mb-2">Asunto</label>
+                                <select id="contactSubject" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500 rounded-xl outline-none transition-all text-sm text-slate-700">
+                                    <option value="Cotización de Productos">Cotización de Productos</option>
+                                    <option value="Soporte Técnico Especializado">Soporte Técnico Especializado</option>
+                                    <option value="Garantías de Hardware">Garantías de Hardware</option>
+                                    <option value="Otros">Otros</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label href="#message" class="block text-xs font-bold uppercase text-slate-400 mb-2">Mensaje o Consulta</label>
+                            <textarea id="contactMessage" required rows="5" placeholder="Detalla los productos o servicios que requieres..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500 rounded-xl outline-none transition-all text-sm text-slate-700 resize-none"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg shadow-brand-200 transition-all flex items-center justify-center gap-2">
+                            <i class="fa-regular fa-paper-plane"></i> Enviar Mensaje Técnico
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / Pie de página -->
+    <footer class="bg-slate-900 text-slate-400 pt-16 pb-8 border-t border-slate-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 pb-12 border-b border-slate-800">
+                
+                <!-- Columna 1: Info e Identidad -->
+                <div class="space-y-4">
+                    <a href="#" class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-gradient-to-tr from-brand-500 to-cyan-400 rounded-xl flex items-center justify-center text-white">
+                            <i class="fa-solid fa-microchip text-lg"></i>
+                        </div>
+                        <span class="font-extrabold text-xl tracking-tight text-white">TECNO-SUR</span>
+                    </a>
+                    <p class="text-sm leading-relaxed">Expertos en proporcionarte las mejores herramientas del mundo tecnológico actual con envíos nacionales de alta seguridad.</p>
+                    <!-- Redes Sociales -->
+                    <div class="flex items-center gap-3 pt-2">
+                        <a href="#" class="w-9 h-9 bg-slate-800 hover:bg-brand-600 text-slate-300 hover:text-white rounded-lg flex items-center justify-center transition-all"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="w-9 h-9 bg-slate-800 hover:bg-brand-600 text-slate-300 hover:text-white rounded-lg flex items-center justify-center transition-all"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-9 h-9 bg-slate-800 hover:bg-brand-600 text-slate-300 hover:text-white rounded-lg flex items-center justify-center transition-all"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                </div>
+
+                <!-- Columna 2: Categorías de Productos -->
+                <div>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Productos</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#productos" onclick="filterCategory('computadoras')" class="hover:text-white transition-colors">Computadoras Portátiles</a></li>
+                        <li><a href="#productos" onclick="filterCategory('computadoras')" class="hover:text-white transition-colors">Computadoras de Escritorio</a></li>
+                        <li><a href="#productos" onclick="filterCategory('teclados')" class="hover:text-white transition-colors">Teclados Mecánicos</a></li>
+                        <li><a href="#productos" onclick="filterCategory('mouse')" class="hover:text-white transition-colors">Mouses Gaming</a></li>
+                        <li><a href="#productos" onclick="filterCategory('accesorios')" class="hover:text-white transition-colors">Auriculares y Periféricos</a></li>
+                    </ul>
+                </div>
+
+                <!-- Columna 3: Enlaces Rápidos -->
+                <div>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Empresa</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#inicio" class="hover:text-white transition-colors">Sobre Nosotros</a></li>
+                        <li><a href="#servicios" class="hover:text-white transition-colors">Servicios Técnicos</a></li>
+                        <li><a href="#contacto" class="hover:text-white transition-colors">Contacto de Soporte</a></li>
+                        <li><a href="#armarpc" class="hover:text-white transition-colors">Armado Personalizado</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Términos y Condiciones</a></li>
+                    </ul>
+                </div>
+
+                <!-- Columna 4: Boletín Informativo -->
+                <div class="space-y-4">
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Suscríbete</h4>
+                    <p class="text-sm">Recibe las mejores ofertas flash semanales directo a tu correo electrónico.</p>
+                    <div class="relative w-full">
+                        <input type="email" placeholder="Tu Email..." class="w-full px-4 py-3 bg-slate-800 border-none rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 text-white placeholder-slate-500">
+                        <button onclick="showToast('¡Gracias por suscribirte al boletín!')" class="absolute right-2 top-2 bg-brand-600 hover:bg-brand-500 text-white text-xs px-3 py-1.5 rounded-lg transition-colors">Unirme</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-between items-center pt-8 text-xs text-slate-500">
+                <p>&copy; 2026 TECNO-SUR S. de R.L. Todos los derechos reservados.</p>
+                <div class="flex items-center gap-4 mt-4 sm:mt-0">
+                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-lock"></i> SSL Pago 100% Protegido</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- PANEL LATERAL: Carrito de Compras Deslizable -->
+    <div id="cartSidebar" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-2xl transform translate-x-full cart-transition border-l border-slate-200 flex flex-col">
+        <!-- Encabezado del Carrito -->
+        <div class="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-basket-shopping text-brand-600 text-lg"></i>
+                <h3 class="font-extrabold text-lg text-slate-900">Carrito de Compras</h3>
+            </div>
+            <button onclick="toggleCart()" class="w-9 h-9 rounded-full hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Lista de Productos en el Carrito -->
+        <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar">
+            <!-- Relleno dinámico mediante Javascript -->
+        </div>
+
+        <!-- Carrito Vacío Estado -->
+        <div id="cartEmptyState" class="hidden flex-1 flex flex-col items-center justify-center p-6 text-center">
+            <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 mb-4 text-xl">
+                <i class="fa-solid fa-cart-arrow-down"></i>
+            </div>
+            <h4 class="font-bold text-slate-800">Tu carrito está vacío</h4>
+            <p class="text-slate-400 text-sm mt-1 max-w-xs">Agrega algunos mouses, teclados o la PC de tus sueños para verlos aquí.</p>
+        </div>
+
+        <!-- Resumen y Acción de Checkout -->
+        <div class="p-6 border-t border-slate-100 bg-slate-50 space-y-4">
+            <div class="flex justify-between items-center text-sm">
+                <span class="text-slate-500">Subtotal del pedido</span>
+                <span id="cartSubtotal" class="font-bold text-slate-800">$0.00</span>
+            </div>
+            <div class="flex justify-between items-center text-xs text-emerald-600">
+                <span>Envío</span>
+                <span class="font-bold">¡GRATIS temporalmente!</span>
+            </div>
+            <div class="pt-2 flex justify-between items-center">
+                <span class="font-bold text-slate-900">Total Neto:</span>
+                <span id="cartTotal" class="font-black text-2xl text-brand-600">$0.00</span>
+            </div>
+
+            <button onclick="triggerCheckout()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-200 transition-all flex items-center justify-center gap-2">
+                <i class="fa-regular fa-credit-card"></i> Completar Compra Virtual
+            </button>
+        </div>
+    </div>
+
+    <!-- Fondo desenfocado oscuro para el carrito o modales -->
+    <div id="cartOverlay" onclick="toggleCart()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 hidden transition-opacity"></div>
+
+
+    <!-- MODAL DETALLE DE PRODUCTO -->
+    <div id="productDetailModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm hidden">
+        <div class="bg-white w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl relative animate-fade-in flex flex-col md:flex-row">
+            <!-- Botón de Cerrar Modal -->
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- Foto de Producto -->
+            <div class="md:w-1/2 bg-slate-50 flex items-center justify-center p-6 border-r border-slate-100">
+                <img id="modalProductImage" src="" alt="" class="max-h-64 object-contain rounded-xl shadow-sm">
+            </div>
+
+            <!-- Datos e Info del Producto -->
+            <div class="md:w-1/2 p-8 flex flex-col justify-between">
+                <div class="space-y-4">
+                    <span id="modalProductCategory" class="text-[10px] font-bold uppercase tracking-wider bg-brand-50 text-brand-700 px-2 py-1 rounded-md">Categoría</span>
+                    <h3 id="modalProductName" class="font-extrabold text-2xl text-slate-900 leading-tight">Nombre del Producto</h3>
+                    <p id="modalProductDescription" class="text-sm text-slate-500 leading-relaxed">Descripción detallada y especificaciones completas de compatibilidad del componente tecnológico.</p>
+                    
+                    <div class="flex items-center gap-2">
+                        <div class="flex text-amber-400 text-xs">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <span class="text-slate-400 text-xs">(4.9 estrellas)</span>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <span id="modalProductPrice" class="text-3xl font-black text-brand-600">$0.00</span>
+                        <span class="text-xs text-emerald-600 font-semibold bg-emerald-50 px-2 py-1 rounded-md">En Stock Listo para Enviar</span>
+                    </div>
+                </div>
+
+                <div class="pt-6 border-t border-slate-100">
+                    <button id="modalAddToCartBtn" class="w-full py-4 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg shadow-brand-200 flex items-center justify-center gap-2 transition-all">
+                        <i class="fa-solid fa-cart-plus"></i> Añadir al Carrito
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- TOAST NOTIFICATIONS (Alertas Visuales) -->
+    <div id="toastContainer" class="fixed bottom-6 left-6 z-50 flex flex-col gap-3">
+        <!-- Dinámicamente inyectados mediante JS -->
+    </div>
+
+
+    <!-- Lógica de Funcionamiento Interactiva -->
+    <script src="./script.js"></script>
+</body>
+</html>
